@@ -19,6 +19,8 @@ const setup = stripIndent`
   const actions = of({});
   const actions$ = of({});
   const that = { actions };
+
+  const differentSource = of({});
 `;
 
 ruleTester({ types: true }).run("no-unsafe-first", rule, {
@@ -100,6 +102,18 @@ ruleTester({ types: true }).run("no-unsafe-first", rule, {
         );
       `,
       options: [{ observable: "foo" }]
+    },
+    {
+      code: stripIndent`
+        // https://github.com/cartant/eslint-plugin-rxjs/issues/43
+        // non-matching default observable
+        ${setup}
+        const effect = differentSource.pipe(
+          ofType("DO_SOMETHING"),
+          tap(() => {}),
+          take(1)
+        );
+      `
     }
   ],
   invalid: [
@@ -117,9 +131,9 @@ ruleTester({ types: true }).run("no-unsafe-first", rule, {
       errors: [
         {
           messageId: "forbidden",
-          line: 17,
+          line: 19,
           column: 11,
-          endLine: 17,
+          endLine: 19,
           endColumn: 16
         }
       ]
@@ -138,9 +152,9 @@ ruleTester({ types: true }).run("no-unsafe-first", rule, {
       errors: [
         {
           messageId: "forbidden",
-          line: 17,
+          line: 19,
           column: 11,
-          endLine: 17,
+          endLine: 19,
           endColumn: 15
         }
       ]
@@ -159,9 +173,9 @@ ruleTester({ types: true }).run("no-unsafe-first", rule, {
       errors: [
         {
           messageId: "forbidden",
-          line: 17,
+          line: 19,
           column: 11,
-          endLine: 17,
+          endLine: 19,
           endColumn: 16
         }
       ]
@@ -180,9 +194,9 @@ ruleTester({ types: true }).run("no-unsafe-first", rule, {
       errors: [
         {
           messageId: "forbidden",
-          line: 17,
+          line: 19,
           column: 11,
-          endLine: 17,
+          endLine: 19,
           endColumn: 15
         }
       ]
@@ -201,9 +215,9 @@ ruleTester({ types: true }).run("no-unsafe-first", rule, {
       errors: [
         {
           messageId: "forbidden",
-          line: 17,
+          line: 19,
           column: 11,
-          endLine: 17,
+          endLine: 19,
           endColumn: 16
         }
       ]
@@ -222,9 +236,9 @@ ruleTester({ types: true }).run("no-unsafe-first", rule, {
       errors: [
         {
           messageId: "forbidden",
-          line: 17,
+          line: 19,
           column: 11,
-          endLine: 17,
+          endLine: 19,
           endColumn: 15
         }
       ]
@@ -248,9 +262,9 @@ ruleTester({ types: true }).run("no-unsafe-first", rule, {
       errors: [
         {
           messageId: "forbidden",
-          line: 17,
+          line: 19,
           column: 11,
-          endLine: 17,
+          endLine: 19,
           endColumn: 15
         }
       ]
